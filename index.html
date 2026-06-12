@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLK Curriculum Navigator</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #fdf8f9;
+    color: #2d1f26;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .nav-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #c44b7a;
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.01em;
+  }
+
+  .header p {
+    font-size: 0.95rem;
+    color: #7a5568;
+  }
+
+  .slk-logo {
+    display: inline-block;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    color: #c44b7a;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #a07090;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    min-height: 22px;
+  }
+
+  .breadcrumb .crumb-active {
+    color: #2d1f26;
+    font-weight: 700;
+  }
+
+  .breadcrumb .crumb-link {
+    color: #c44b7a;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .breadcrumb .sep { color: #d4a0bc; }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #7a5568;
+    cursor: pointer;
+    border: 1.5px solid #e8c4d4;
+    border-radius: 20px;
+    padding: 5px 14px;
+    background: white;
+    margin-bottom: 1.25rem;
+    transition: all 0.15s;
+  }
+
+  .back-btn:hover { background: #fdf0f5; border-color: #c44b7a; color: #c44b7a; }
+
+  /* Section label */
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #b07090;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.9rem;
+  }
+
+  /* Area / sub-area cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    background: white;
+    border: 1.5px solid #f0d8e6;
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+  }
+
+  .card:hover {
+    border-color: #c44b7a;
+    box-shadow: 0 4px 16px rgba(196,75,122,0.1);
+    transform: translateY(-2px);
+  }
+
+  .card .card-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2d1f26;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .card .card-desc {
+    font-size: 0.8rem;
+    color: #7a5568;
+    line-height: 1.5;
+  }
+
+  .card.under-construction {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .card.under-construction:hover {
+    border-color: #f0d8e6;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .badge-construction {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: #faeeda;
+    color: #854f0b;
+    margin-bottom: 7px;
+  }
+
+  /* Goal level cards */
+  .goal-card {
+    background: white;
+    border: 1.5px solid #f0d8e6;
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .goal-card:hover { border-color: #d8a0bc; }
+
+  .level-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .level-beginner { color: #1d9e75; }
+  .level-intermediate { color: #2878c8; }
+  .level-advanced { color: #c44b7a; }
+
+  .goal-text {
+    font-size: 0.92rem;
+    color: #2d1f26;
+    line-height: 1.6;
+  }
+
+  .goal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    background: #c44b7a;
+    text-decoration: none;
+    border-radius: 20px;
+    padding: 7px 16px;
+    align-self: flex-start;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .goal-link:hover { background: #a33860; transform: translateY(-1px); }
+
+  .goal-link svg { flex-shrink: 0; }
+
+  /* Note callout */
+  .note {
+    font-size: 0.85rem;
+    color: #7a5568;
+    background: #fdf0f5;
+    border-left: 3px solid #e8a0c0;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-bottom: 1.1rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0d8e6;
+    font-size: 0.78rem;
+    color: #b07090;
+  }
+
+  .footer a { color: #c44b7a; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.6rem; }
+    .cards { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="nav-wrap">
+
+  <div class="header">
+    <div class="slk-logo">speechandlanguagekids.com</div>
+    <h1>SLK Curriculum Navigator</h1>
+    <p>Find the right goal for your client in three clicks.</p>
+  </div>
+
+  <div id="breadcrumb" class="breadcrumb"></div>
+  <div id="back-area"></div>
+  <div id="content"></div>
+
+  <div class="footer">
+    <a href="https://speechandlanguagekids.com" target="_blank" rel="noopener">Speech and Language Kids</a> &mdash; Carrie Clark, CCC-SLP
+  </div>
+
+</div>
+
+<script>
+const BASE = "https://hub.speechandlanguagekids.com/posts/";
+
+const data = {
+  areas: [
+    {
+      id: "functional", name: "Functional Communication",
+      desc: "Using words to communicate basic wants and needs. Start here if fewer than ~50 words or not yet communicating consistently.",
+      subs: [
+        { id: "early", name: "Early Interactions", desc: "Basic social engagement and responding",
+          url: BASE + "therapy-curriculums-early-interactions-curriculum",
+          goals: [
+            { level: "Beginner", text: "Improve social awareness and engagement by responding to name, sharing joint attention, and taking turns" },
+            { level: "Intermediate", text: "Improve social understanding and responding by following directions, answering questions, and making choices" },
+            { level: "Advanced", text: "Improve social participation and interaction by initiating and maintaining interactions with others" }
+          ]
+        },
+        { id: "firstwords", name: "First Words", desc: "Teach children to say their first individual words and short phrases",
+          url: BASE + "therapy-curriculums-first-words-curriculum-for-analytic-language-processors",
+          goals: [
+            { level: "Beginner", text: "Indirect strategies (modeling) to encourage spoken communication" },
+            { level: "Intermediate", text: "Speak consonant-vowel (CV), vowel-consonant (VC), and CVC words for functional communication" },
+            { level: "Advanced", text: "Speak 2-word combinations" }
+          ]
+        },
+        { id: "echolalia", name: "Shaping Echolalia", desc: "For gestalt language processors (GLPs) and children learning language through echolalia",
+          url: BASE + "therapy-curriculums-shaping-echolalia-curriculum-for-gestalt-language-processors",
+          goals: [
+            { level: "Beginner", text: "Communicate using at least 5 different gestalts" },
+            { level: "Intermediate", text: "Communicate using shorter versions of previously learned gestalts or a gestalt made up of pieces of other gestalts" },
+            { level: "Advanced", text: "Communicate using single-word and two-word utterances" }
+          ]
+        },
+        { id: "aac", name: "AAC", desc: "For those who would benefit from alternative communication methods such as sign language, pictures, or speech devices",
+          url: BASE + "therapy-curriculums-augmentative-alternative-communication-aac-curriculum",
+          goals: [
+            { level: "Beginner", text: "Communicate anything using an AAC device or system (or spoken language)" },
+            { level: "Intermediate", text: "Express a variety of different communicative intents (rejection/cessation, recurrence, actions, attributes, possession, etc.) using an AAC device or system (or spoken language)" },
+            { level: "Advanced", text: "Produce 2-word combinations to comment, ask, or respond using AAC system (or spoken language)" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "speech", name: "Speech Sounds",
+      desc: "How clearly speech sounds are pronounced and how easy the individual is to understand.",
+      subs: [
+        { id: "artic", name: "Articulation", desc: "Work on specific speech sounds",
+          url: BASE + "therapy-curriculums-articulation-curriculum",
+          goals: [
+            { level: "Beginner", text: "Produce early-developing speech sounds (/b, n, m, p, h, w, d/ and vowels)" },
+            { level: "Intermediate", text: "Produce mid-developing speech sounds (/g, k, f, t, ng, \"y\"/)"},
+            { level: "Advanced", text: "Produce later-developing speech sounds (/v, j, s, ch, l, sh, z, r, \"th\" voiced and voiceless, zh/) and consonant clusters" }
+          ]
+        },
+        { id: "phonology", name: "Phonology", desc: "Work on error patterns (phonological processes)",
+          url: BASE + "therapy-curriculums-phonology-curriculum",
+          note: "Cycles Approach also available for individuals with many phonological errors.",
+          goals: [
+            { level: "Beginner", text: "Eliminate initial consonant deletion, final consonant deletion, and unstressed syllable deletion" },
+            { level: "Intermediate", text: "Eliminate velar fronting, backing, stopping of fricatives, and cluster reduction" },
+            { level: "Advanced", text: "Eliminate gliding of liquids, prevocalic voicing, and postvocalic devoicing" }
+          ]
+        },
+        { id: "motor", name: "Motor Speech", desc: "Work on motor planning for speech sounds",
+          url: BASE + "therapy-curriculums-motor-speech-curriculum",
+          goals: [
+            { level: "Beginner", text: "Produce CV, VC, and CVC word structures" },
+            { level: "Intermediate", text: "Produce expanded word structures (CVCV, CCVC) and/or combine words into two- to three-word utterances" },
+            { level: "Advanced", text: "Improve speech intelligibility and fluidity" }
+          ]
+        },
+        { id: "mumbling", name: "Mumbling", desc: "Improve clarity for children who mumble or slur their speech",
+          url: BASE + "therapy-curriculums-mumbling-curriculum",
+          goals: [
+            { level: "Beginner", text: "Use intentional over-articulation (exaggerated speech clarity) in sentences" },
+            { level: "Intermediate", text: "Over-articulate (properly and precisely pronounce every sound) in conversation when prompted" },
+            { level: "Advanced", text: "Speak clearly and recognize when the other person is confused and clarify" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "language", name: "Language",
+      desc: "Understanding and using words and sentences to express ideas, ask and answer questions, follow directions, and share thoughts clearly.",
+      subs: [
+        { id: "directions", name: "Following Directions", desc: "Understanding and following multi-step directions",
+          url: BASE + "therapy-curriculums-following-directions-curriculum",
+          goals: [
+            { level: "Beginner", text: "Follow 1-2 step directions containing basic actions and spatial concepts" },
+            { level: "Intermediate", text: "Follow multi-step and non-routine directions" },
+            { level: "Advanced", text: "Follow multi-step directions related to classroom activities and real-life tasks" }
+          ]
+        },
+        { id: "questions", name: "Asking & Answering Questions", desc: "Yes/no and wh- questions through academic conversation",
+          url: BASE + "therapy-curriculums-asking-and-answering-questions-curriculum",
+          goals: [
+            { level: "Beginner", text: "Answer yes/no and wh- questions (when presented one question type at a time)" },
+            { level: "Intermediate", text: "Ask and answer a variety of yes/no and wh- questions in conversation" },
+            { level: "Advanced", text: "Ask and answer questions to support participation in academic tasks, social interactions, and daily routines" }
+          ]
+        },
+        { id: "sequencing", name: "Sequencing & Retelling", desc: "Retelling events and narratives with clear structure",
+          url: BASE + "therapy-curriculums-sequencing-and-retelling-curriculum",
+          goals: [
+            { level: "Beginner", text: "Sequence and retell the steps of a familiar task" },
+            { level: "Intermediate", text: "Retell a past event with a clear beginning, middle, and end, while providing necessary details and sequencing words" },
+            { level: "Advanced", text: "Retell a narrative or academic event using clear structure, appropriate sequencing, and temporal concepts" }
+          ]
+        },
+        { id: "grammar", name: "Grammar / Syntax", desc: "Grammatically correct sentences through complex structures",
+          url: BASE + "therapy-curriculums-grammarsyntax-curriculum",
+          goals: [
+            { level: "Beginner", text: "Produce simple, grammatically correct sentences in conversation" },
+            { level: "Intermediate", text: "Produce grammatically correct compound and complex sentences in conversation" },
+            { level: "Advanced", text: "Demonstrate mastery of grade-appropriate grammar/syntax skills for effective communication during speaking and writing tasks" }
+          ]
+        },
+        { id: "literacy", name: "Language for Literacy", desc: "Phonological awareness, narrative structure, and critical thinking language skills",
+          url: BASE + "therapy-curriculums-foundations-for-literacy-curriculum",
+          goals: [
+            { level: "Beginner", text: "Demonstrate foundational literacy skills of phonological awareness, basic story structure, and sequencing" },
+            { level: "Intermediate", text: "Understand and use discourse structures in spoken and written language: narratives, informational, opinion" },
+            { level: "Advanced", text: "Demonstrate critical thinking language skills: making inferences, abstract language, comparing and contrasting perspectives, using graphic organizers" }
+          ]
+        },
+        { id: "abstract", name: "Abstract Language", desc: "Figurative language, idioms, similes, metaphors, and inferencing",
+          url: BASE + "therapy-curriculums-abstract-language-curriculum",
+          goals: [
+            { level: "Beginner", text: "Identifying if statements are literal or nonliteral" },
+            { level: "Intermediate", text: "Explaining the nonliteral meaning of an idiom, simile, or metaphor presented in context" },
+            { level: "Advanced", text: "Making inferences about text or social scenarios" }
+          ]
+        },
+        { id: "vocab", name: "Vocabulary", desc: "Building and applying functional and academic vocabulary",
+          url: BASE + "therapy-curriculums-vocabulary-curriculum",
+          goals: [
+            { level: "Beginner", text: "Demonstrate functional use of a core vocabulary of at least 50 words" },
+            { level: "Intermediate", text: "Expand vocabulary by using a variety of words to describe, categorize, and express ideas" },
+            { level: "Advanced", text: "Apply multiple word-learning strategies to determine and explain the meaning of newly-introduced words (affixes, context clues, synonyms/antonyms, multiple meanings, etc.)" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "social", name: "Social Communication",
+      desc: "Interacting with others socially, including conversational skills and social awareness.",
+      subs: [
+        { id: "social-awareness", name: "Social Awareness & Interaction", desc: "Responding to others, understanding perspectives, and engaging socially",
+          url: BASE + "therapy-curriculums-social-awareness-and-interaction-curriculum",
+          goals: [
+            { level: "Beginner", text: "Respond to others by acknowledging greetings, responding to name, and sharing in joint attention and turn taking" },
+            { level: "Intermediate", text: "Engage in a short interaction with a peer maintaining appropriate proximity and participating in reciprocal conversational turns" },
+            { level: "Advanced", text: "Demonstrate increased awareness that others may have differing thoughts, feelings, and perspectives and use this awareness when navigating social situations" }
+          ]
+        },
+        { id: "self-reg", name: "Emotional Regulation & Self-Advocacy", desc: "Communicating needs, regulating emotions, and advocating for yourself",
+          url: BASE + "therapy-curriculums-emotional-regulation-self-advocacy-curriculum",
+          goals: [
+            { level: "Beginner", text: "Communicate using language instead of resorting to inappropriate or challenging behaviors" },
+            { level: "Intermediate", text: "Label their own emotions and select coping strategies to regulate their emotions" },
+            { level: "Advanced", text: "Demonstrate self-advocacy skills by making choices, asking for help, asking for clarification, or indicating they don't want/like something" }
+          ]
+        },
+        { id: "convo", name: "Conversational Skills", desc: "Initiating, maintaining, and navigating different types of conversations",
+          url: BASE + "therapy-curriculums-conversational-skills-curriculum",
+          goals: [
+            { level: "Beginner", text: "Initiate an interaction with a peer and/or respond to a peer" },
+            { level: "Intermediate", text: "Engage in a 10 minute conversation with a peer, maintaining the topic and contributing at least 4 reciprocal exchanges per topic" },
+            { level: "Advanced", text: "Navigate complex conversations even when those interactions involve disagreements, communication breakdowns, or the need to advocate for oneself" }
+          ]
+        },
+        { id: "abstract-social", name: "Abstract Language", desc: "Figurative language, sarcasm, idioms, or inferencing in conversation",
+          url: BASE + "therapy-curriculums-abstract-language-curriculum",
+          goals: [
+            { level: "Beginner", text: "Identifying if statements are literal or nonliteral" },
+            { level: "Intermediate", text: "Explaining the nonliteral meaning of an idiom, simile, or metaphor presented in context" },
+            { level: "Advanced", text: "Making inferences about text or social scenarios" }
+          ]
+        },
+        { id: "mutism", name: "Selective Mutism", desc: "For individuals who can speak in some situations but refuse to in others",
+          url: BASE + "therapy-curriculums-selective-mutism-curriculum",
+          goals: [
+            { level: "Beginner", text: "Environmental modifications will be made to increase the client's sense of control and self-sufficiency in order to reduce anxiety about speaking situations" },
+            { level: "Intermediate", text: "Identify three self-driven reasons to speak to others and three relaxation techniques for self-calming during anxious moments" },
+            { level: "Advanced", text: "Increase ability to communicate in more challenging situations" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "fluency", name: "Fluency / Stuttering",
+      desc: "How smoothly speech flows including stuttering, cluttering, word finding, and breath control.",
+      subs: [
+        { id: "fluency-found", name: "Foundations for Fluency", desc: "Coordinating breath with speech and addressing emotional reactions to stuttering",
+          url: BASE + "therapy-curriculums-foundations-for-fluency-curriculum",
+          goals: [
+            { level: "Beginner", text: "Use diaphragmatic breathing during spontaneous conversation" },
+            { level: "Intermediate", text: "Increase self-awareness of stuttering and participate in guided activities for managing emotional reactions to stuttering" },
+            { level: "Advanced", text: "Demonstrate self-monitoring and carry-over of fluency strategies" }
+          ]
+        },
+        { id: "stutter", name: "Stuttering", desc: "For individuals with repetitions, prolongations, blocks, and other stuttering-like disfluencies",
+          url: BASE + "therapy-curriculums-stuttering-curriculum",
+          goals: [
+            { level: "Beginner", text: "Demonstrate fast and slow speech as well as bumpy and slow speech" },
+            { level: "Intermediate", text: "Use fluency shaping strategies in structured conversation" },
+            { level: "Advanced", text: "Use stuttering modification techniques in structured conversation" }
+          ]
+        },
+        { id: "clutter", name: "Cluttering", desc: "For individuals who speak rapidly with disorganized and difficult to understand speech",
+          url: BASE + "therapy-curriculums-cluttering-curriculum",
+          goals: [
+            { level: "Beginner", text: "Demonstrate cluttering strategies for slow, clear speech" },
+            { level: "Intermediate", text: "Understand and identify communication breakdowns" },
+            { level: "Advanced", text: "Use cluttering strategies to clarify speech during communication breakdowns" }
+          ]
+        },
+        { id: "wordfind", name: "Word Finding / Word Retrieval", desc: "For individuals who struggle to think of the right word or who hesitate, pause, or say the wrong thing",
+          url: BASE + "therapy-curriculums-word-findingword-retrieval-curriculum",
+          goals: [
+            { level: "Beginner", text: "Improve word retrieval by completing semantic word association activities" },
+            { level: "Intermediate", text: "Improve word retrieval by completing phonological word association activities" },
+            { level: "Advanced", text: "Use word-finding strategies in daily conversations" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "voice", name: "Voice / Resonance",
+      desc: "How the voice sounds during speaking including vocal quality and resonance/nasality.",
+      subs: [
+        { id: "voice-found", name: "Foundations of Healthy Voice Use", desc: "Improving vocal hygiene, reducing vocal strain, and developing breath support",
+          url: BASE + "therapy-curriculums-foundations-of-healthy-voice-use-curriculum",
+          goals: [
+            { level: "Beginner", text: "Demonstrate compliance with vocal hygiene measures" },
+            { level: "Intermediate", text: "Use diaphragmatic breathing for proper breath support for speech" },
+            { level: "Advanced", text: "Self-monitoring and carry-over of healthy voice strategies" }
+          ]
+        },
+        { id: "voice-therapy", name: "Voice Therapy", desc: "Improving vocal quality due to strain, tension, or inefficient voice use",
+          url: BASE + "therapy-curriculums-voice-curriculum",
+          goals: [
+            { level: "Beginner", text: "Use strategies to reduce vocal strain, such as diaphragmatic breathing, easy onset, and continuous voicing" },
+            { level: "Intermediate", text: "Use frontal focus resonance during conversation" },
+            { level: "Advanced", text: "Demonstrate control of pitch, loudness, and vocal endurance by maintaining a natural and sustainable vocal quality during conversation" }
+          ]
+        },
+        { id: "resonance", name: "Resonance (Nasality)", desc: "Addressing hypernasality or nasal emission",
+          url: BASE + "therapy-curriculums-resonance-nasality-curriculum",
+          goals: [
+            { level: "Beginner", text: "Discriminate between oral resonance and hypernasality" },
+            { level: "Intermediate", text: "Use oral resonance when reading aloud" },
+            { level: "Advanced", text: "Use oral airflow/resonance throughout the day" }
+          ]
+        },
+        { id: "prosody", name: "Prosody", desc: "Improving use of pitch, volume, and rate",
+          url: BASE + "therapy-curriculums-prosody-curriculum",
+          goals: [
+            { level: "Beginner", text: "Identify and describe pitch, rate, and volume in recorded or live environmental sounds" },
+            { level: "Intermediate", text: "Demonstrate expected prosody (pitch, rate, and volume) in phrases and sentences" },
+            { level: "Advanced", text: "Use expected prosody (pitch, rate, volume) during conversation throughout the day" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "exec", name: "Executive Functioning",
+      desc: "How we manage ourselves and our day — starting things, staying with things, shifting gears, remembering, and regulating emotions.",
+      underConstruction: true, subs: []
+    }
+  ]
+};
+
+const ARROW = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+const DOWNLOAD = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const BACK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>`;
+
+let state = { area: null, sub: null };
+
+function render() {
+  const bc = document.getElementById('breadcrumb');
+  const backEl = document.getElementById('back-area');
+  const content = document.getElementById('content');
+  bc.innerHTML = '';
+  backEl.innerHTML = '';
+
+  if (!state.area) {
+    bc.innerHTML = '<span class="crumb-active">All goal areas</span>';
+    content.innerHTML = renderAreas();
+  } else if (!state.sub) {
+    const area = data.areas.find(a => a.id === state.area);
+    bc.innerHTML = `<span class="crumb-link" onclick="goHome()">All goal areas</span><span class="sep">›</span><span class="crumb-active">${area.name}</span>`;
+    backEl.innerHTML = `<button class="back-btn" onclick="goHome()">${BACK} All goal areas</button>`;
+    content.innerHTML = renderSubs(area);
+  } else {
+    const area = data.areas.find(a => a.id === state.area);
+    const sub = area.subs.find(s => s.id === state.sub);
+    bc.innerHTML = `<span class="crumb-link" onclick="goHome()">All goal areas</span><span class="sep">›</span><span class="crumb-link" onclick="goArea()">${area.name}</span><span class="sep">›</span><span class="crumb-active">${sub.name}</span>`;
+    backEl.innerHTML = `<button class="back-btn" onclick="goArea()">${BACK} ${area.name}</button>`;
+    content.innerHTML = renderGoals(sub);
+  }
+}
+
+function renderAreas() {
+  return `<div class="section-label">Choose a goal area</div><div class="cards">${data.areas.map(a => {
+    const uc = a.underConstruction;
+    return `<div class="card${uc ? ' under-construction' : ''}" ${uc ? '' : `onclick="selectArea('${a.id}')"`} role="button" tabindex="${uc ? -1 : 0}">
+      ${uc ? '<div class="badge-construction">Under construction</div>' : ''}
+      <div class="card-name">${a.name} ${uc ? '' : ARROW}</div>
+      <div class="card-desc">${a.desc}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function renderSubs(area) {
+  return `<div class="section-label">Choose a sub-area</div><div class="cards">${area.subs.map(s =>
+    `<div class="card" onclick="selectSub('${s.id}')" role="button" tabindex="0">
+      <div class="card-name">${s.name} ${ARROW}</div>
+      <div class="card-desc">${s.desc}</div>
+    </div>`
+  ).join('')}</div>`;
+}
+
+function renderGoals(sub) {
+  const lvlClass = { Beginner: 'level-beginner', Intermediate: 'level-intermediate', Advanced: 'level-advanced' };
+  let html = '';
+  if (sub.note) html += `<div class="note">${sub.note}</div>`;
+  html += `<div class="section-label">Choose a level — opens the goal packet</div>`;
+  html += sub.goals.map(g =>
+    `<div class="goal-card">
+      <div class="level-label ${lvlClass[g.level]}">${g.level}</div>
+      <div class="goal-text">${g.text}</div>
+      <a class="goal-link" href="${sub.url}" target="_blank" rel="noopener">${DOWNLOAD} Open ${g.level} Goal Packet</a>
+    </div>`
+  ).join('');
+  return html;
+}
+
+function selectArea(id) { state = { area: id, sub: null }; render(); window.scrollTo(0,0); }
+function selectSub(id) { state.sub = id; render(); window.scrollTo(0,0); }
+function goHome() { state = { area: null, sub: null }; render(); window.scrollTo(0,0); }
+function goArea() { state.sub = null; render(); window.scrollTo(0,0); }
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement.classList.contains('card')) {
+    document.activeElement.click();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
