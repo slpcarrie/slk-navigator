@@ -1,49 +1,274 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLK Curriculum Navigator</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-.nav-wrap { padding: 1.5rem 0 2rem; max-width: 680px; }
-.header { text-align: center; margin-bottom: 1.5rem; }
-.header h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
-.header p { font-size: 14px; color: var(--color-text-secondary); }
-.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 1.25rem; min-height: 24px; flex-wrap: wrap; }
-.breadcrumb span { color: var(--color-text-primary); font-weight: 500; }
-.breadcrumb .sep { color: var(--color-text-tertiary); }
-.back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-secondary); cursor: pointer; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 4px 10px; background: none; margin-bottom: 1rem; transition: background 0.15s; }
-.back-btn:hover { background: var(--color-background-secondary); }
-.section-label { font-size: 12px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
-.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
-.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.125rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
-.card:hover { border-color: #d0507a; background: var(--color-background-secondary); }
-.card .card-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; line-height: 1.35; }
-.card .card-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
-.card.under-construction { opacity: 0.55; cursor: default; }
-.card.under-construction:hover { border-color: var(--color-border-tertiary); background: var(--color-background-primary); }
-.badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; }
-.badge-construction { background: #faeeda; color: #854f0b; }
-.goal-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.125rem 1.25rem; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
-.goal-card .level { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
-.level-beginner { color: #1d9e75; }
-.level-intermediate { color: #378add; }
-.level-advanced { color: #d4537e; }
-.goal-card .goal-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.55; }
-.goal-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: #d0507a; text-decoration: none; border: 0.5px solid #d0507a; border-radius: var(--border-radius-md); padding: 6px 12px; align-self: flex-start; transition: background 0.15s; }
-.goal-link:hover { background: #fbeaf0; }
-.note { font-size: 13px; color: var(--color-text-secondary); border-left: 2px solid var(--color-border-secondary); padding-left: 10px; margin-bottom: 1rem; }
-</style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #fdf8f9;
+    color: #2d1f26;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .nav-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #c44b7a;
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.01em;
+  }
+
+  .header p {
+    font-size: 0.95rem;
+    color: #7a5568;
+  }
+
+  .slk-logo {
+    display: inline-block;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    color: #c44b7a;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #a07090;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    min-height: 22px;
+  }
+
+  .breadcrumb .crumb-active {
+    color: #2d1f26;
+    font-weight: 700;
+  }
+
+  .breadcrumb .crumb-link {
+    color: #c44b7a;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .breadcrumb .sep { color: #d4a0bc; }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #7a5568;
+    cursor: pointer;
+    border: 1.5px solid #e8c4d4;
+    border-radius: 20px;
+    padding: 5px 14px;
+    background: white;
+    margin-bottom: 1.25rem;
+    transition: all 0.15s;
+  }
+
+  .back-btn:hover { background: #fdf0f5; border-color: #c44b7a; color: #c44b7a; }
+
+  /* Section label */
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #b07090;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.9rem;
+  }
+
+  /* Area / sub-area cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    background: white;
+    border: 1.5px solid #f0d8e6;
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+  }
+
+  .card:hover {
+    border-color: #c44b7a;
+    box-shadow: 0 4px 16px rgba(196,75,122,0.1);
+    transform: translateY(-2px);
+  }
+
+  .card .card-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2d1f26;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .card .card-desc {
+    font-size: 0.8rem;
+    color: #7a5568;
+    line-height: 1.5;
+  }
+
+  .card.under-construction {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .card.under-construction:hover {
+    border-color: #f0d8e6;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .badge-construction {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: #faeeda;
+    color: #854f0b;
+    margin-bottom: 7px;
+  }
+
+  /* Goal level cards */
+  .goal-card {
+    background: white;
+    border: 1.5px solid #f0d8e6;
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .goal-card:hover { border-color: #d8a0bc; }
+
+  .level-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .level-beginner { color: #1d9e75; }
+  .level-intermediate { color: #2878c8; }
+  .level-advanced { color: #c44b7a; }
+
+  .goal-text {
+    font-size: 0.92rem;
+    color: #2d1f26;
+    line-height: 1.6;
+  }
+
+  .goal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    background: #c44b7a;
+    text-decoration: none;
+    border-radius: 20px;
+    padding: 7px 16px;
+    align-self: flex-start;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .goal-link:hover { background: #a33860; transform: translateY(-1px); }
+
+  .goal-link svg { flex-shrink: 0; }
+
+  /* Note callout */
+  .note {
+    font-size: 0.85rem;
+    color: #7a5568;
+    background: #fdf0f5;
+    border-left: 3px solid #e8a0c0;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-bottom: 1.1rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0d8e6;
+    font-size: 0.78rem;
+    color: #b07090;
+  }
+
+  .footer a { color: #c44b7a; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.6rem; }
+    .cards { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
 <div class="nav-wrap">
-  <h2 class="sr-only">SLK Curriculum Navigator — click through goal areas to find the right goal and download the matching packet</h2>
+
   <div class="header">
+    <div class="slk-logo">speechandlanguagekids.com</div>
     <h1>SLK Curriculum Navigator</h1>
     <p>Find the right goal for your client in three clicks.</p>
   </div>
+
   <div id="breadcrumb" class="breadcrumb"></div>
   <div id="back-area"></div>
   <div id="content"></div>
+
+  <div class="footer">
+    <a href="https://speechandlanguagekids.com" target="_blank" rel="noopener">Speech and Language Kids</a> &mdash; Carrie Clark, CCC-SLP
+  </div>
+
 </div>
 
 <script>
 const BASE = "https://hub.speechandlanguagekids.com/posts/";
+
 const data = {
   areas: [
     {
@@ -92,8 +317,8 @@ const data = {
           url: BASE + "therapy-curriculums-articulation-curriculum",
           goals: [
             { level: "Beginner", text: "Produce early-developing speech sounds (/b, n, m, p, h, w, d/ and vowels)" },
-            { level: "Intermediate", text: "Produce mid-developing speech sounds (/ɡ, k, f, t, ŋ, \"y\"/)"},
-            { level: "Advanced", text: "Produce later-developing speech sounds (/v, ʤ, s, ʧ, l, ʃ, z, /r/, \"th\" voiced and voiceless, ʒ/) and consonant clusters" }
+            { level: "Intermediate", text: "Produce mid-developing speech sounds (/g, k, f, t, ng, \"y\"/)"},
+            { level: "Advanced", text: "Produce later-developing speech sounds (/v, j, s, ch, l, sh, z, r, \"th\" voiced and voiceless, zh/) and consonant clusters" }
           ]
         },
         { id: "phonology", name: "Phonology", desc: "Work on error patterns (phonological processes)",
@@ -189,7 +414,7 @@ const data = {
       id: "social", name: "Social Communication",
       desc: "Interacting with others socially, including conversational skills and social awareness.",
       subs: [
-        { id: "social-awareness", name: "Social Awareness & Interaction", desc: "Responding to others, understanding perspectives, and engaging in social interactions",
+        { id: "social-awareness", name: "Social Awareness & Interaction", desc: "Responding to others, understanding perspectives, and engaging socially",
           url: BASE + "therapy-curriculums-social-awareness-and-interaction-curriculum",
           goals: [
             { level: "Beginner", text: "Respond to others by acknowledging greetings, responding to name, and sharing in joint attention and turn taking" },
@@ -309,33 +534,38 @@ const data = {
     },
     {
       id: "exec", name: "Executive Functioning",
-      desc: "How we manage ourselves and our day — starting things, staying with things, shifting gears, remembering what we're doing, and regulating emotions.",
+      desc: "How we manage ourselves and our day — starting things, staying with things, shifting gears, remembering, and regulating emotions.",
       underConstruction: true, subs: []
     }
   ]
 };
 
+const ARROW = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+const DOWNLOAD = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const BACK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>`;
+
 let state = { area: null, sub: null };
 
 function render() {
   const bc = document.getElementById('breadcrumb');
-  const back = document.getElementById('back-area');
+  const backEl = document.getElementById('back-area');
   const content = document.getElementById('content');
   bc.innerHTML = '';
-  back.innerHTML = '';
+  backEl.innerHTML = '';
+
   if (!state.area) {
-    bc.innerHTML = '<span>Goal areas</span>';
+    bc.innerHTML = '<span class="crumb-active">All goal areas</span>';
     content.innerHTML = renderAreas();
   } else if (!state.sub) {
     const area = data.areas.find(a => a.id === state.area);
-    bc.innerHTML = `<span style="cursor:pointer;color:var(--color-text-secondary);" onclick="goHome()">Goal areas</span><span class="sep">›</span><span>${area.name}</span>`;
-    back.innerHTML = `<button class="back-btn" onclick="goHome()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>`;
+    bc.innerHTML = `<span class="crumb-link" onclick="goHome()">All goal areas</span><span class="sep">›</span><span class="crumb-active">${area.name}</span>`;
+    backEl.innerHTML = `<button class="back-btn" onclick="goHome()">${BACK} All goal areas</button>`;
     content.innerHTML = renderSubs(area);
   } else {
     const area = data.areas.find(a => a.id === state.area);
     const sub = area.subs.find(s => s.id === state.sub);
-    bc.innerHTML = `<span style="cursor:pointer;color:var(--color-text-secondary);" onclick="goHome()">Goal areas</span><span class="sep">›</span><span style="cursor:pointer;color:var(--color-text-secondary);" onclick="goArea()">${area.name}</span><span class="sep">›</span><span>${sub.name}</span>`;
-    back.innerHTML = `<button class="back-btn" onclick="goArea()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>`;
+    bc.innerHTML = `<span class="crumb-link" onclick="goHome()">All goal areas</span><span class="sep">›</span><span class="crumb-link" onclick="goArea()">${area.name}</span><span class="sep">›</span><span class="crumb-active">${sub.name}</span>`;
+    backEl.innerHTML = `<button class="back-btn" onclick="goArea()">${BACK} ${area.name}</button>`;
     content.innerHTML = renderGoals(sub);
   }
 }
@@ -343,9 +573,9 @@ function render() {
 function renderAreas() {
   return `<div class="section-label">Choose a goal area</div><div class="cards">${data.areas.map(a => {
     const uc = a.underConstruction;
-    return `<div class="card${uc ? ' under-construction' : ''}" onclick="${uc ? '' : `selectArea('${a.id}')`}">
-      ${uc ? '<div class="badge badge-construction">Under construction</div>' : ''}
-      <div class="card-name">${a.name}</div>
+    return `<div class="card${uc ? ' under-construction' : ''}" ${uc ? '' : `onclick="selectArea('${a.id}')"`} role="button" tabindex="${uc ? -1 : 0}">
+      ${uc ? '<div class="badge-construction">Under construction</div>' : ''}
+      <div class="card-name">${a.name} ${uc ? '' : ARROW}</div>
       <div class="card-desc">${a.desc}</div>
     </div>`;
   }).join('')}</div>`;
@@ -353,34 +583,41 @@ function renderAreas() {
 
 function renderSubs(area) {
   return `<div class="section-label">Choose a sub-area</div><div class="cards">${area.subs.map(s =>
-    `<div class="card" onclick="selectSub('${s.id}')">
-      <div class="card-name">${s.name}</div>
+    `<div class="card" onclick="selectSub('${s.id}')" role="button" tabindex="0">
+      <div class="card-name">${s.name} ${ARROW}</div>
       <div class="card-desc">${s.desc}</div>
     </div>`
   ).join('')}</div>`;
 }
 
 function renderGoals(sub) {
+  const lvlClass = { Beginner: 'level-beginner', Intermediate: 'level-intermediate', Advanced: 'level-advanced' };
   let html = '';
   if (sub.note) html += `<div class="note">${sub.note}</div>`;
-  html += `<div class="section-label">Choose a level — click to open the goal packet</div>`;
-  const levelClass = { Beginner: 'level-beginner', Intermediate: 'level-intermediate', Advanced: 'level-advanced' };
+  html += `<div class="section-label">Choose a level — opens the goal packet</div>`;
   html += sub.goals.map(g =>
     `<div class="goal-card">
-      <div class="level ${levelClass[g.level]}">${g.level}</div>
+      <div class="level-label ${lvlClass[g.level]}">${g.level}</div>
       <div class="goal-text">${g.text}</div>
-      <a class="goal-link" href="${sub.url}" target="_blank" rel="noopener">
-        <i class="ti ti-download" aria-hidden="true"></i> Open ${g.level} Goal Packet
-      </a>
+      <a class="goal-link" href="${sub.url}" target="_blank" rel="noopener">${DOWNLOAD} Open ${g.level} Goal Packet</a>
     </div>`
   ).join('');
   return html;
 }
 
-function selectArea(id) { state = { area: id, sub: null }; render(); }
-function selectSub(id) { state.sub = id; render(); }
-function goHome() { state = { area: null, sub: null }; render(); }
-function goArea() { state.sub = null; render(); }
+function selectArea(id) { state = { area: id, sub: null }; render(); window.scrollTo(0,0); }
+function selectSub(id) { state.sub = id; render(); window.scrollTo(0,0); }
+function goHome() { state = { area: null, sub: null }; render(); window.scrollTo(0,0); }
+function goArea() { state.sub = null; render(); window.scrollTo(0,0); }
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement.classList.contains('card')) {
+    document.activeElement.click();
+  }
+});
 
 render();
 </script>
+</body>
+</html>
