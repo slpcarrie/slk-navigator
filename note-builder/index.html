@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLK Note Builder</title>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React + Babel via CDN — no build step needed -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!--
+  IMPORTANT: set this to your deployed backend URL before publishing.
+  If your backend (Vercel project) and this page are on the SAME domain, you can leave this as "/api/generate".
+  If they're on DIFFERENT domains (e.g. this page is on GitHub Pages, backend is on Vercel),
+  set the full URL here, e.g.:
+  window.SLK_API_URL = "https://your-project-name.vercel.app/api/generate";
+-->
+<script>
+  window.SLK_API_URL = "https://slk-note-builder-deploy.vercel.app/api/generate";
+</script>
+
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>
