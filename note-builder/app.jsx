@@ -151,6 +151,9 @@ function SLKNoteBuilder() {
   const [sAttend, setSAttend] = useState("present");
   const [sBehavior, setSBehavior] = useState("");
   const [sPlan, setSPlan] = useState("");
+  const [sGroupSize, setSGroupSize] = useState("");
+  const [sTherapyType, setSTherapyType] = useState("");
+  const [sMaterials, setSMaterials] = useState("");
   const [sGoals, setSGoals] = useState([{ skill:"", acc:"", prog:"", note:"" }]);
 
   // Progress state
@@ -203,8 +206,10 @@ function SLKNoteBuilder() {
         ).join("\n");
         if (!goalLines) { setError("Please add at least one goal with a skill name."); setLoading(false); return; }
         soapNote = await callClaude(`Write a concise SOAP note for a speech-language session. Use "Client" throughout. Pronouns: ${pronoun}.
-Date: ${dateStr}. Session type: ${sType}.
+Date: ${dateStr}. Session type: ${sType}.${sType==="group" && sGroupSize ? ` Group size: ${sGroupSize} clients.` : ""}
 ${sBehavior ? `Behavior/engagement: ${sBehavior}.` : ""}
+${sTherapyType ? `Type of therapy/interventions used: ${sTherapyType}.` : ""}
+${sMaterials ? `Materials/activities used: ${sMaterials}.` : ""}
 ${sPlan ? `Plan for next session: ${sPlan}.` : ""}
 
 Goals:
@@ -213,7 +218,7 @@ ${goalLines}
 Rules:
 - Only use information provided above. Do not invent activities, materials, diagnoses, or background details.
 - S: 1–2 sentences on behavior/engagement. If none was provided, write only "Client attended the session."
-- O: One sentence per goal stating the skill, the performance data, and prompt level if given. Keep it factual.
+- O: One sentence per goal stating the skill, the performance data, and prompt level if given. Keep it factual. If therapy type or materials were provided, weave them in naturally.
 - A: 1–3 sentences interpreting the data. Note progress or lack of it. Do not speculate beyond what the data shows. A warm, encouraging note is welcome where genuinely earned by the data, but stay factual.
 - P: 1–2 sentences on next steps${sPlan ? " based on the plan provided" : ""}.
 - Plain language. No jargon. No bullet points. Friendly, supportive tone throughout — still professional. Start with "S:" — no preamble.`);
@@ -372,6 +377,13 @@ Suggested medical necessity statement:
                   </div>
                 </div>
               </div>
+              {sType==="group" && (
+                <div style={{ marginTop:10 }}>
+                  <label style={labelStyle}>Group size <span style={{fontWeight:400,color:"#aabdb3"}}>(optional)</span></label>
+                  <input style={inputStyle} value={sGroupSize} onChange={e=>setSGroupSize(e.target.value)}
+                    placeholder="e.g. 3" type="number" min="2" max="20" />
+                </div>
+              )}
 
               {sAttend==="present" && (
                 <>
@@ -392,6 +404,16 @@ Suggested medical necessity statement:
                       <label style={labelStyle}>Student behavior / engagement today</label>
                       <input style={inputStyle} value={sBehavior} onChange={e=>setSBehavior(e.target.value)}
                         placeholder="e.g. cooperative, required redirections, fatigued" />
+                    </div>
+                    <div style={{ marginBottom:10 }}>
+                      <label style={labelStyle}>Type of therapy / interventions used</label>
+                      <input style={inputStyle} value={sTherapyType} onChange={e=>setSTherapyType(e.target.value)}
+                        placeholder="e.g. drill-based practice, play-based, modeling, AAC" />
+                    </div>
+                    <div style={{ marginBottom:10 }}>
+                      <label style={labelStyle}>Materials / activities used</label>
+                      <input style={inputStyle} value={sMaterials} onChange={e=>setSMaterials(e.target.value)}
+                        placeholder="e.g. picture cards, game, storybook, whiteboard" />
                     </div>
                     <div>
                       <label style={labelStyle}>Plan for next session</label>
