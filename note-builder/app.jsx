@@ -218,7 +218,7 @@ ${goalLines}
 Rules:
 - Only use information provided above. Do not invent activities, materials, diagnoses, or background details.
 - S: 1–2 sentences on behavior/engagement. If none was provided, write only "Client attended the session."
-- O: One sentence per goal stating the skill, the performance data, and prompt level if given. Keep it factual. If therapy type or materials were provided, weave them in naturally.
+- O: One sentence per goal stating the skill, the performance data, and prompt level if given. Keep it factual.${sTherapyType ? ` You MUST explicitly state the type of therapy/interventions used (${sTherapyType}) in the O section — this is required, not optional.` : ""}${sMaterials ? ` You MUST explicitly name the materials/activities used (${sMaterials}) in the O section — this is required, not optional.` : ""}${sGroupSize && sType==="group" ? ` You MUST mention the group size (${sGroupSize} clients) in the O section.` : ""}
 - A: 1–3 sentences interpreting the data. Note progress or lack of it. Do not speculate beyond what the data shows. A warm, encouraging note is welcome where genuinely earned by the data, but stay factual.
 - P: 1–2 sentences on next steps${sPlan ? " based on the plan provided" : ""}.
 - Plain language. No jargon. No bullet points. Friendly, supportive tone throughout — still professional. Start with "S:" — no preamble.`);
