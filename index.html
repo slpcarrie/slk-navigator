@@ -40,15 +40,7 @@
     color: #7a5568;
   }
 
-  .slk-logo {
-    display: inline-block;
-    font-family: 'Fredoka One', cursive;
-    font-size: 0.85rem;
-    color: #c44b7a;
-    letter-spacing: 0.04em;
-    margin-bottom: 0.75rem;
-    opacity: 0.7;
-  }
+  .slk-logo { display: none; }
 
   /* Breadcrumb */
   .breadcrumb {
@@ -228,18 +220,44 @@
     margin-bottom: 1.1rem;
   }
 
-  /* Footer */
-  .footer {
-    text-align: center;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #f0d8e6;
-    font-size: 0.78rem;
-    color: #b07090;
+  /* Cycles callout card */
+  .cycles-card {
+    display: block;
+    background: linear-gradient(135deg, #fdf0f5 0%, #f0e8f8 100%);
+    border: 1.5px solid #e0a0c8;
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    text-decoration: none;
+    margin-top: 4px;
+    transition: all 0.18s;
+  }
+  .cycles-card:hover {
+    border-color: #c44b7a;
+    box-shadow: 0 4px 16px rgba(196,75,122,0.12);
+    transform: translateY(-2px);
+  }
+  .cycles-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2d1f26;
+    margin-bottom: 5px;
+  }
+  .cycles-desc {
+    font-size: 0.85rem;
+    color: #7a5568;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  .cycles-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #c44b7a;
   }
 
-  .footer a { color: #c44b7a; text-decoration: none; }
-  .footer a:hover { text-decoration: underline; }
+
 
   @media (max-width: 480px) {
     .header h1 { font-size: 1.6rem; }
@@ -250,19 +268,11 @@
 <body>
 <div class="nav-wrap">
 
-  <div class="header">
-    <div class="slk-logo">speechandlanguagekids.com</div>
-    <h1>SLK Curriculum Navigator</h1>
-    <p>Find the right goal for your client in three clicks.</p>
-  </div>
-
   <div id="breadcrumb" class="breadcrumb"></div>
   <div id="back-area"></div>
   <div id="content"></div>
 
-  <div class="footer">
-    <a href="https://speechandlanguagekids.com" target="_blank" rel="noopener">Speech and Language Kids</a> &mdash; Carrie Clark, CCC-SLP
-  </div>
+
 
 </div>
 
@@ -531,11 +541,6 @@ const data = {
           ]
         }
       ]
-    },
-    {
-      id: "exec", name: "Executive Functioning",
-      desc: "How we manage ourselves and our day — starting things, staying with things, shifting gears, remembering, and regulating emotions.",
-      underConstruction: true, subs: []
     }
   ]
 };
@@ -582,12 +587,22 @@ function renderAreas() {
 }
 
 function renderSubs(area) {
-  return `<div class="section-label">Choose a sub-area</div><div class="cards">${area.subs.map(s =>
+  let html = `<div class="section-label">Choose a sub-area</div><div class="cards">${area.subs.map(s =>
     `<div class="card" onclick="selectSub('${s.id}')" role="button" tabindex="0">
       <div class="card-name">${s.name} ${ARROW}</div>
       <div class="card-desc">${s.desc}</div>
     </div>`
   ).join('')}</div>`;
+
+  if (area.id === 'language') {
+    html += `<a href="https://hub.speechandlanguagekids.com/spaces/21123060" target="_blank" rel="noopener" class="cycles-card">
+      <div class="cycles-title">Need to Work on Multiple Sub-Areas?</div>
+      <div class="cycles-desc">Our Core Language Program uses a Cycles Approach to teach all areas of oral language over the course of 16 lessons.</div>
+      <div class="cycles-cta">Explore the Core Language Program ${ARROW}</div>
+    </a>`;
+  }
+
+  return html;
 }
 
 function renderGoals(sub) {
